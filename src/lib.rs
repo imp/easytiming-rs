@@ -22,6 +22,7 @@ pub struct Timing<'a> {
     start: time::Instant,
     lapse: time::Duration,
     name: Cow<'a, str>,
+    quiet: bool,
 }
 
 impl<'a> fmt::Display for Timing<'a> {
@@ -44,6 +45,16 @@ impl<'a> Timing<'a> {
             start: time::Instant::now(),
             lapse: time::Duration::default(),
             name: name.into(),
+            quiet: false,
+        }
+    }
+
+    pub fn quiet() -> Self {
+        Self {
+            start: time::Instant::now(),
+            lapse: time::Duration::default(),
+            name: Cow::<str>::default(),
+            quiet: true,
         }
     }
 
@@ -55,6 +66,9 @@ impl<'a> Timing<'a> {
     #[inline]
     fn finish(&mut self) {
         self.lapse = self.elapsed();
+        if self.quiet {
+            return;
+        }
         self.report()
     }
 
@@ -106,5 +120,11 @@ mod tests {
     fn fromowned() {
         let t = Timing::new(Cow::Owned(String::from(NAME)));
         assert_eq!(t.name(), NAME);
+    }
+
+    #[test]
+    fn quiet() {
+        let t = Timing::quiet();
+        assert_eq!(t.name, "");
     }
 }

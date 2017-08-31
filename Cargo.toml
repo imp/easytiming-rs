@@ -1,0 +1,13 @@
+[package]
+name = "easytiming"
+version = "0.0.0"
+authors = ["Cyril Plisko <cyril.plisko@mountall.com>"]
+description = "Utilities for easy timing functions, code blocks, etc"
+keywords = ["timing"]
+documentation = "https://docs.rs/easytiming"
+homepage = "https://gitlab.com/imp/easytiming-rs"
+repository = "https://gitlab.com/imp/easytiming-rs.git"
+license = "MIT/Apache-2.0"
+readme = "README.md"
+
+[dependencies]

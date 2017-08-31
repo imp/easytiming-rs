@@ -2,6 +2,16 @@
 //! and other elements of Rust source code. It is flexible enough to accomodate different
 //! output options. It plays nice with `log` and `slog`. It works on stable in its basic form.
 //! In addition, when used on nightly, it can be invoked as an attribute.
+//!
+//! Quick start
+//! ```rust
+//! fn do_something() {
+//!     let _t = Timing::new("do_something() function");
+//!
+//!     // Do some important stuff here
+//!     // ...
+//! }
+//! ```
 
 use std::fmt;
 use std::time;

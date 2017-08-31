@@ -6,5 +6,6 @@ use easytiming::Timing;
 fn simple() {
     let t = Timing::new("simple");
     println!("{:?}", t);
+    println!("{}", t);
     assert!(false);
 }

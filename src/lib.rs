@@ -15,12 +15,20 @@ pub struct Timing<'a> {
 
 impl<'a> fmt::Display for Timing<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "Timing({}) running for {:?}", self.name(), self.elapsed())
+        write!(
+            f,
+            "Timing({}) is running for {:?}",
+            self.name(),
+            self.elapsed()
+        )
     }
 }
 
 impl<'a> Timing<'a> {
-    pub fn new<N>(name: N) -> Self where N: Into<Cow<'a, str>> {
+    pub fn new<N>(name: N) -> Self
+    where
+        N: Into<Cow<'a, str>>,
+    {
         Self {
             start: time::Instant::now(),
             name: name.into(),

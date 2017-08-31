@@ -10,6 +10,7 @@ use std::borrow::Cow;
 #[derive(Debug)]
 pub struct Timing<'a> {
     start: time::Instant,
+    lapse: time::Duration,
     name: Cow<'a, str>,
 }
 
@@ -31,6 +32,7 @@ impl<'a> Timing<'a> {
     {
         Self {
             start: time::Instant::now(),
+            lapse: time::Duration::default(),
             name: name.into(),
         }
     }
@@ -41,8 +43,28 @@ impl<'a> Timing<'a> {
     }
 
     #[inline]
+    fn finish(&mut self) {
+        self.lapse = self.elapsed();
+        self.report()
+    }
+
+    #[inline]
     fn name(&self) -> &str {
         self.name.as_ref()
+    }
+
+    fn report(&self) {
+        println!(
+            "\"{}\" was running for {} ns",
+            self.name,
+            self.lapse.subsec_nanos()
+        );
+    }
+}
+
+impl<'a> Drop for Timing<'a> {
+    fn drop(&mut self) {
+        self.finish()
     }
 }
 

@@ -14,29 +14,32 @@
 //! ```
 
 use std::fmt;
+use std::io::Write;
 use std::time;
 use std::borrow::Cow;
 
 #[derive(Debug)]
-pub struct Timing<'a> {
+pub struct Timing<'a, W> where W: Write {
     start: time::Instant,
     lapse: time::Duration,
     name: Cow<'a, str>,
     quiet: bool,
+    write: Option<W>,
 }
 
-impl<'a> Default for Timing<'a> {
+impl<'a, W> Default for Timing<'a, W> where W: Write {
     fn default() -> Self {
         Self {
             start: time::Instant::now(),
             lapse: Default::default(),
             name: Default::default(),
             quiet: false,
+            write: None,
         }
     }
 }
 
-impl<'a> fmt::Display for Timing<'a> {
+impl<'a, W> fmt::Display for Timing<'a, W> where W: Write {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
@@ -47,7 +50,7 @@ impl<'a> fmt::Display for Timing<'a> {
     }
 }
 
-impl<'a> Timing<'a> {
+impl<'a, W> Timing<'a, W> where W: Write {
     pub fn new<N>(name: N) -> Self
     where
         N: Into<Cow<'a, str>>,
@@ -57,6 +60,7 @@ impl<'a> Timing<'a> {
             lapse: time::Duration::default(),
             name: name.into(),
             quiet: false,
+            write: None,
         }
     }
 
@@ -66,7 +70,18 @@ impl<'a> Timing<'a> {
             lapse: time::Duration::default(),
             name: Cow::<str>::default(),
             quiet: true,
+            write: None,
         }
+    }
+
+    pub fn with_writer<N>(name: N, writer: W) -> Self
+    where
+        N: Into<Cow<'a, str>>,
+    {
+        let mut timing = Self::default();
+        timing.name = name.into();
+        timing.write = Some(writer);
+        timing
     }
 
     #[inline]
@@ -97,7 +112,7 @@ impl<'a> Timing<'a> {
     }
 }
 
-impl<'a> Drop for Timing<'a> {
+impl<'a, W> Drop for Timing<'a, W> where W: Write {
     fn drop(&mut self) {
         self.finish()
     }

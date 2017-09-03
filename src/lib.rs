@@ -1,7 +1,7 @@
 //! easytiming provides tools for taking timing measurement for functions, code blocks
 //! and other elements of Rust source code. It is flexible enough to accomodate different
 //! output options. It plays nice with `log` and `slog`. It works on stable in its basic form.
-//! In addition, when used on nightly, it can be invoked as an attribute.
+//! In addition, when used on nightly, it can be invoked as an attribute (unimplemented yet).
 //!
 //! Quick start
 //! ```rust

@@ -25,6 +25,17 @@ pub struct Timing<'a> {
     quiet: bool,
 }
 
+impl<'a> Default for Timing<'a> {
+    fn default() -> Self {
+        Self {
+            start: time::Instant::now(),
+            lapse: Default::default(),
+            name: Default::default(),
+            quiet: false,
+        }
+    }
+}
+
 impl<'a> fmt::Display for Timing<'a> {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(

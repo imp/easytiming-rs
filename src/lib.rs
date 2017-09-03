@@ -19,7 +19,10 @@ use std::time;
 use std::borrow::Cow;
 
 #[derive(Debug)]
-pub struct Timing<'a, W> where W: Write {
+pub struct Timing<'a, W>
+where
+    W: Write,
+{
     start: time::Instant,
     lapse: time::Duration,
     name: Cow<'a, str>,
@@ -27,7 +30,10 @@ pub struct Timing<'a, W> where W: Write {
     write: Option<W>,
 }
 
-impl<'a, W> Default for Timing<'a, W> where W: Write {
+impl<'a, W> Default for Timing<'a, W>
+where
+    W: Write,
+{
     fn default() -> Self {
         Self {
             start: time::Instant::now(),
@@ -39,7 +45,10 @@ impl<'a, W> Default for Timing<'a, W> where W: Write {
     }
 }
 
-impl<'a, W> fmt::Display for Timing<'a, W> where W: Write {
+impl<'a, W> fmt::Display for Timing<'a, W>
+where
+    W: Write,
+{
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(
             f,
@@ -50,7 +59,10 @@ impl<'a, W> fmt::Display for Timing<'a, W> where W: Write {
     }
 }
 
-impl<'a, W> Timing<'a, W> where W: Write {
+impl<'a, W> Timing<'a, W>
+where
+    W: Write,
+{
     pub fn new<N>(name: N) -> Self
     where
         N: Into<Cow<'a, str>>,
@@ -112,7 +124,10 @@ impl<'a, W> Timing<'a, W> where W: Write {
     }
 }
 
-impl<'a, W> Drop for Timing<'a, W> where W: Write {
+impl<'a, W> Drop for Timing<'a, W>
+where
+    W: Write,
+{
     fn drop(&mut self) {
         self.finish()
     }

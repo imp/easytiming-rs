@@ -14,12 +14,12 @@
 //! ```
 
 use std::fmt;
-use std::io::Write;
+use std::io::{Stdout, Write};
 use std::time;
 use std::borrow::Cow;
 
 #[derive(Debug)]
-pub struct Timing<'a, W>
+pub struct Timing<'a, W = Stdout>
 where
     W: Write,
 {
@@ -141,31 +141,31 @@ mod tests {
 
     #[test]
     fn fromstr() {
-        let t = Timing::new(NAME);
+        let t: Timing = Timing::new(NAME);
         assert_eq!(t.name(), NAME);
     }
 
     #[test]
     fn fromstring() {
-        let t = Timing::new(String::from(NAME));
+        let t: Timing = Timing::new(String::from(NAME));
         assert_eq!(t.name(), NAME);
     }
 
     #[test]
     fn fromborrowed() {
-        let t = Timing::new(Cow::Borrowed(NAME));
+        let t: Timing = Timing::new(Cow::Borrowed(NAME));
         assert_eq!(t.name(), NAME);
     }
 
     #[test]
     fn fromowned() {
-        let t = Timing::new(Cow::Owned(String::from(NAME)));
+        let t: Timing = Timing::new(Cow::Owned(String::from(NAME)));
         assert_eq!(t.name(), NAME);
     }
 
     #[test]
     fn quiet() {
-        let t = Timing::quiet();
+        let t: Timing = Timing::quiet();
         assert_eq!(t.name, "");
     }
 }

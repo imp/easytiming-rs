@@ -10,4 +10,7 @@ license = "MIT/Apache-2.0"
 readme = "README.md"
 categories = ["date-and-time", "development-tools::profiling", "development-tools::debugging"]
 
+[badges]
+gitlab = { repository = "https://gitlab.com/imp/easytiming-rs.git" }
+travis-ci = { repository = "https://github.com/imp/easytiming-rs.git" }
 [dependencies]

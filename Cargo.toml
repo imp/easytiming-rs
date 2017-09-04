@@ -9,5 +9,6 @@ homepage = "https://gitlab.com/imp/easytiming-rs"
 repository = "https://gitlab.com/imp/easytiming-rs.git"
 license = "MIT/Apache-2.0"
 readme = "README.md"
+categories = ["date-and-time", "development-tools::profiling", "development-tools::debugging"]
 
 [dependencies]

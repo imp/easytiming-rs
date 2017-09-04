@@ -1,6 +1,6 @@
 [package]
 name = "easytiming"
-version = "0.0.4"
+version = "0.0.5"
 authors = ["Cyril Plisko <cyril.plisko@mountall.com>"]
 description = "Utilities for easy timing functions, code blocks, etc"
 keywords = ["timing"]

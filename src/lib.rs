@@ -115,12 +115,17 @@ where
         self.name.as_ref()
     }
 
-    fn report(&self) {
-        println!(
+    fn report(&mut self) {
+        let output = format!(
             "\"{}\" was running for {} ns",
             self.name,
             self.lapse.subsec_nanos()
         );
+        if let Some(ref mut out) = self.write {
+            write!(out, "{}", output).unwrap();
+        } else {
+            println!("{}", output);
+        }
     }
 }
 

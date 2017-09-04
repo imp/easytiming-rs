@@ -4,6 +4,7 @@
 //! In addition, when used on nightly, it can be invoked as an attribute (unimplemented yet).
 //!
 //! Quick start
+//!
 //! ```rust
 //! fn do_something() {
 //!     let _t = Timing::new("do_something() function");

@@ -6,8 +6,10 @@
 //! Quick start
 //!
 //! ```rust
+//! use easytiming::Timing;
+//!
 //! fn do_something() {
-//!     let _t = Timing::new("do_something() function");
+//!     let _t: Timing = Timing::new("do_something() function");
 //!
 //!     // Do some important stuff here
 //!     // ...

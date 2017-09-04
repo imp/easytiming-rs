@@ -27,7 +27,7 @@ where
     lapse: time::Duration,
     name: Cow<'a, str>,
     quiet: bool,
-    write: Option<W>,
+    writer: Option<W>,
 }
 
 impl<'a, W> Default for Timing<'a, W>
@@ -40,7 +40,7 @@ where
             lapse: Default::default(),
             name: Default::default(),
             quiet: false,
-            write: None,
+            writer: None,
         }
     }
 }
@@ -67,23 +67,15 @@ where
     where
         N: Into<Cow<'a, str>>,
     {
-        Self {
-            start: time::Instant::now(),
-            lapse: time::Duration::default(),
-            name: name.into(),
-            quiet: false,
-            write: None,
-        }
+        let mut timing = Timing::default();
+        timing.name = name.into();
+        timing
     }
 
     pub fn quiet() -> Self {
-        Self {
-            start: time::Instant::now(),
-            lapse: time::Duration::default(),
-            name: Cow::<str>::default(),
-            quiet: true,
-            write: None,
-        }
+        let mut timing = Timing::default();
+        timing.quiet = true;
+        timing
     }
 
     pub fn with_writer<N>(name: N, writer: W) -> Self
@@ -92,7 +84,7 @@ where
     {
         let mut timing = Self::default();
         timing.name = name.into();
-        timing.write = Some(writer);
+        timing.writer = Some(writer);
         timing
     }
 
@@ -121,7 +113,7 @@ where
             self.name,
             self.lapse.subsec_nanos()
         );
-        if let Some(ref mut out) = self.write {
+        if let Some(ref mut out) = self.writer {
             write!(out, "{}", output).unwrap();
         } else {
             println!("{}", output);

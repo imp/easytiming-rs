@@ -16,10 +16,28 @@
 //! }
 //! ```
 
+#[cfg(log)]
+#[macro_use]
+extern crate log;
+#[cfg(slog)]
+#[macro_use]
+extern crate slog;
+
+
 use std::fmt;
 use std::io::{Stdout, Write};
 use std::time;
 use std::borrow::Cow;
+
+#[derive(Debug)]
+enum Sink<W> where W: Write {
+    Println,
+    Writer(W),
+    #[cfg(log)]
+    Log,
+    #[cfg(slog)]
+    Slog,
+}
 
 #[derive(Debug)]
 pub struct Timing<'a, W = Stdout>
@@ -30,7 +48,7 @@ where
     lapse: time::Duration,
     name: Cow<'a, str>,
     quiet: bool,
-    writer: Option<W>,
+    sink: Sink<W>,
 }
 
 impl<'a, W> Default for Timing<'a, W>
@@ -43,7 +61,7 @@ where
             lapse: Default::default(),
             name: Default::default(),
             quiet: false,
-            writer: None,
+            sink: Sink::Println,
         }
     }
 }
@@ -87,6 +105,17 @@ where
     {
         let mut timing = Self::default();
         timing.name = name.into();
+        timing.sink = Sink::Writer(writer);
+        timing
+    }
+
+    #[cfg(log)]
+    pub fn with_writer<N>(name: N, writer: W) -> Self
+    where
+        N: Into<Cow<'a, str>>,
+    {
+        let mut timing = Self::default();
+        timing.name = name.into();
         timing.writer = Some(writer);
         timing
     }
@@ -116,10 +145,13 @@ where
             self.name,
             self.lapse.subsec_nanos()
         );
-        if let Some(ref mut out) = self.writer {
-            write!(out, "{}", output).unwrap();
-        } else {
-            println!("{}", output);
+        match self.sink {
+            Sink::Println => println!("{}", output),
+            Sink::Writer(ref mut out) => write!(out, "{}", output).unwrap(),
+            #[cfg(log)]
+            Sink::Log => trace!(output),
+            #[cfg(slog)]
+            Sink::Slog => trace!(output),
         }
     }
 }

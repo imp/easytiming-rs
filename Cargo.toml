@@ -14,3 +14,5 @@ categories = ["date-and-time", "development-tools::profiling", "development-tool
 gitlab = { repository = "https://gitlab.com/imp/easytiming-rs.git" }
 travis-ci = { repository = "https://github.com/imp/easytiming-rs.git" }
 [dependencies]
+log = {version = "0.3", optional = true}
+slog = {version = "2.0", optional = true}

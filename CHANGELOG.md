@@ -1,4 +1,8 @@
-### 0.0.4 - 2017-xx-xx
+### 0.0.5 - 2017-09-04
+
+Fix badges repository
+
+### 0.0.4 - 2017-09-04
 
 Add preliminary support for `log` and `slog`
 

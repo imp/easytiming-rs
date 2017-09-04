@@ -11,8 +11,8 @@ readme = "README.md"
 categories = ["date-and-time", "development-tools::profiling", "development-tools::debugging"]
 
 [badges]
-gitlab = { repository = "imp/easytiming-rs.git" }
-travis-ci = { repository = "imp/easytiming-rs.git" }
+gitlab = { repository = "imp/easytiming-rs" }
+travis-ci = { repository = "imp/easytiming-rs" }
 
 [dependencies]
 log = {version = "0.3", optional = true}

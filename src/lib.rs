@@ -30,13 +30,14 @@ use std::time;
 use std::borrow::Cow;
 
 #[derive(Debug)]
-enum Sink<W> where W: Write {
+enum Sink<W>
+where
+    W: Write,
+{
     Println,
     Writer(W),
-    #[cfg(log)]
-    Log,
-    #[cfg(slog)]
-    Slog,
+    #[cfg(log)] Log,
+    #[cfg(slog)] Slog,
 }
 
 #[derive(Debug)]

@@ -16,10 +16,10 @@
 //! }
 //! ```
 
-#[cfg(log)]
+#[cfg(feature = "log")]
 #[macro_use]
 extern crate log;
-#[cfg(slog)]
+#[cfg(feature = "slog")]
 #[macro_use]
 extern crate slog;
 
@@ -36,8 +36,8 @@ where
 {
     Println,
     Writer(W),
-    #[cfg(log)] Log,
-    #[cfg(slog)] Slog,
+    #[cfg(feature = "log")] Log,
+    #[cfg(feature = "slog")] Slog,
 }
 
 #[derive(Debug)]
@@ -110,7 +110,7 @@ where
         timing
     }
 
-    #[cfg(log)]
+    #[cfg(feature = "log")]
     pub fn with_writer<N>(name: N, writer: W) -> Self
     where
         N: Into<Cow<'a, str>>,
@@ -149,9 +149,9 @@ where
         match self.sink {
             Sink::Println => println!("{}", output),
             Sink::Writer(ref mut out) => write!(out, "{}", output).unwrap(),
-            #[cfg(log)]
+            #[cfg(feature = "log")]
             Sink::Log => trace!(output),
-            #[cfg(slog)]
+            #[cfg(feature = "slog")]
             Sink::Slog => trace!(output),
         }
     }

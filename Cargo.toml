@@ -17,3 +17,4 @@ travis-ci = { repository = "imp/easytiming-rs" }
 [dependencies]
 log = { version = "0.3", optional = true }
 slog = { version = "2.0", optional = true }
+futures = { version = "0.1", optional = true }

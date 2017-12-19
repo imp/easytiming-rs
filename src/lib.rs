@@ -22,7 +22,8 @@ extern crate log;
 #[cfg(feature = "slog")]
 #[macro_use]
 extern crate slog;
-
+#[cfg(feature = "futures")]
+extern crate futures;
 
 use std::fmt;
 use std::io::{Stdout, Write};

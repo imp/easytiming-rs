@@ -29,6 +29,9 @@ use std::io::{Stdout, Write};
 use std::time;
 use std::borrow::Cow;
 
+#[cfg(feature = "slog")]
+use slog::Logger;
+
 #[derive(Debug)]
 enum Sink<W>
 where
@@ -37,7 +40,7 @@ where
     Println,
     Writer(W),
     #[cfg(feature = "log")] Log,
-    #[cfg(feature = "slog")] Slog,
+    #[cfg(feature = "slog")] Slog(Logger),
 }
 
 #[derive(Debug)]
@@ -111,13 +114,13 @@ where
     }
 
     #[cfg(feature = "log")]
-    pub fn with_writer<N>(name: N, writer: W) -> Self
+    pub fn with_log<N>(name: N) -> Self
     where
         N: Into<Cow<'a, str>>,
     {
         let mut timing = Self::default();
         timing.name = name.into();
-        timing.writer = Some(writer);
+        timing.sink = Sink::Log;
         timing
     }
 
@@ -141,18 +144,13 @@ where
     }
 
     fn report(&mut self) {
-        let output = format!(
-            "\"{}\" was running for {} ns",
-            self.name,
-            self.lapse.subsec_nanos()
-        );
         match self.sink {
-            Sink::Println => println!("{}", output),
-            Sink::Writer(ref mut out) => write!(out, "{}", output).unwrap(),
+            Sink::Println => println!("\"{}\" was running for {} ns", self.name, self.lapse.subsec_nanos()),
+            Sink::Writer(ref mut out) => write!(out, "\"{}\" was running for {} ns", self.name, self.lapse.subsec_nanos()).unwrap_or_default(),
             #[cfg(feature = "log")]
-            Sink::Log => trace!(output),
+            Sink::Log => trace!("\"{}\" was running for {} ns", self.name, self.lapse.subsec_nanos()),
             #[cfg(feature = "slog")]
-            Sink::Slog => trace!(output),
+            Sink::Slog(ref logger) => slog_trace!(logger, "\"{}\" was running for {} ns", self.name, self.lapse.subsec_nanos()),
         }
     }
 }

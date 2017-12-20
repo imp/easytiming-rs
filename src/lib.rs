@@ -33,6 +33,9 @@ use std::borrow::Cow;
 #[cfg(feature = "slog")]
 use slog::Logger;
 
+#[cfg(feature = "futures")]
+pub mod future;
+
 #[derive(Debug)]
 enum Sink<W>
 where
